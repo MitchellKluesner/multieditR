@@ -1,33 +1,42 @@
-## Repository for the multieditR package 
+## Repository for the multiEditR package 
 
-multiEditR helps identify edits from Sanger Sequences. The algorithms were developed by Mitch Kleusner, and put into this R package by Jeremy Chacón. 
+multiEditR detects and quantifies base edits from Sanger sequencing. Algorithms were developed by Mitch Kluesner, and implemented by Jeremy Chacón. 
 
-To install, use:
+multiEditR inputs a sample Sanger sequence, and either a control Sanger or fasta file, a motif within which to look for edits, the base being edited and expected edited base, and return whether edits were found.
+
+Furthermore, if the control sequence is rev-com from the sample sequence, this package detects that and rev-coms the control sequence prior to testing.
+
+
+
+To install, first you must have devtools:
 
 ```
-devtools::install_github("jeremymchacon/multieditR")
+install.packages("devtools")
+```
+
+Then, use devtools to install the multiEditR package:
+
+```
+devtools::install_github("MoriarityLab/multiEditR.pckg")
 ```
 
 ## Basic functionality:
 
 Here, we load in two example sanger sequences, then detect whether "A" bases were edited within the motif "AGTAGCTGGGATTACAGATG" using detect_edits(), the main function of the package. 
 ```
-library(multieditR)
-sample_file = system.file("extdata", "RP272_cdna_wt.ab1", package="multieditR")
-ctrl_file = system.file("extdata", "RP272_cdna_ko.ab1", package="multieditR")
+library(multiEditR)
+sample_file = system.file("extdata", "RP272_cdna_wt.ab1", package="multiEditR")
+ctrl_file = system.file("extdata", "RP272_cdna_ko.ab1", package="multiEditR")
 motif = "AGTAGCTGGGATTACAGATG"
 wt = "A"
 edit = "G"
 
 fit = detect_edits(
-    # Set parameters
   sample_file = sample_file,
   ctrl_file = ctrl_file,
   p_value = 0.0001, 
   phred_cutoff = 0.0001,
   motif = motif, 
-  motif_fwd = TRUE,
-  use_ctrl_seq = FALSE,
   wt = wt, 
   edit = edit 
 )
@@ -97,7 +106,20 @@ geom_chromatogram(fit1$sample_sanger,fit1$sample_locs[1], fit1$sample_locs[2])
 ```
 
 Or make a report containing results from all of the samples:
+```
+# First set your directory or interest:
+setwd("your/directory/of/interest/to/write/files")
 
+# Run the report, which may take a few minutes
+create_multiEditR_report(fits, params, "my_html_report.html")
 ```
-create_multieditR_report(fits, params, "my_html_report.html")
-```
+
+Known issues:
+
+- sometimes motifs get trimmed due to quality, resulting in chromatograms which seem shorter than expected
+
+- when the control sequence is revcom, printing the chromatogram might not be working correctly
+
+- sometimes the relative position of the edited bases are off by a fixed amount. I think this occurs when indels are removed but not accounted for. 
+
+Please add any other feature requests or issues you find to the issues page. Thank you!

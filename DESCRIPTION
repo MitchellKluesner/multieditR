@@ -1,8 +1,8 @@
-Package: multieditR
+Package: multiEditR
 Type: Package
-Title: MulteditR Detects Edits in Sanger Sequence Data
+Title: multEditR Detects Base Edits from Sanger Sequencing Data
 Version: 0.1.0
-Author: Mitch Kleusner, Jeremy Chacón
+Author: Mitch Kluesner, Jeremy Chacón
 Maintainer: The package maintainer <yourself@somewhere.net>
 Description: More about what it does (maybe more than one line)
     Use four spaces when indenting paragraphs within the Description.
@@ -12,7 +12,7 @@ LazyData: true
 BiocViews:
   rnaseq
 Depends: R (>= 4.1.0),
-    ggplot2 (>= 3.4.4),
+    ggplot2 (>= 3.5.0),
     Biostrings (>= 2.66.0),
     sangerseqR (>= 1.34.0),
     tibble (>= 3.2.1),
